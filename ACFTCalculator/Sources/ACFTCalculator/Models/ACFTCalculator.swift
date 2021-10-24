@@ -34,6 +34,8 @@ public final class ACFTCalculator {
 
     // MARK: Initialization
 
+    /// Creates a new instance of a `ACFTCalculator`, throwing an error if any issues arise
+    /// while reading the scoring standards CSV file.
     public init() throws {
         let csvReader = try CSVReader.acftScoringStandardsReader()
 
