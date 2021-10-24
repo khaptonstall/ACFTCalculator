@@ -47,6 +47,8 @@ final class ACFTCalculatorTests: XCTestCase {
         // Use a pounds value that is explicitly listed on the CSV.
         // 140 pounds should equate to 60 points.
         let pounds = 140
+        XCTAssertTrue(calculator.deadliftPounds.contains(String(pounds)))
+
         let points = calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: pounds))
         XCTAssertEqual(points, 60)
     }
@@ -58,6 +60,8 @@ final class ACFTCalculatorTests: XCTestCase {
         // 140 pounds equates to 60 points, and the next value is 130 which
         // equates to 50 points. A value of 139 should also equate to 50 points.
         let pounds = 139
+        XCTAssertFalse(calculator.deadliftPounds.contains(String(pounds)))
+
         let points = calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: pounds))
         XCTAssertEqual(points, 50)
     }
