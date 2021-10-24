@@ -19,7 +19,7 @@ struct CSVReader {
     /// - Parameter csvFileName: The name of the CSV file to read from. Do not include the ".csv" extension.
     init(csvFileName: String) throws {
         guard let csvPath = Bundle.module.path(forResource: csvFileName, ofType: "csv") else {
-            throw ACFTCalculatorError.csvReaderFailure(reason: .fileNotFound(fileName: csvFileName))
+            throw ACFTCalculatorError.csvReadingFailure(reason: .fileNotFound(fileName: csvFileName))
         }
 
         self.csvContents = try String(contentsOfFile: csvPath)
@@ -55,7 +55,7 @@ struct CSVReader {
         return try self.readRows(removeHeaders: removeHeader)
             .map { row in
             guard row.indices.contains(index) else {
-                throw ACFTCalculatorError.csvReaderFailure(reason: .columnOutOfBounds(index: index))
+                throw ACFTCalculatorError.csvReadingFailure(reason: .columnOutOfBounds(index: index))
             }
             return row[index]
         }
