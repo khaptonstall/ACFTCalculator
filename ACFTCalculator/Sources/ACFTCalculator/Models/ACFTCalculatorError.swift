@@ -7,21 +7,21 @@
 
 import Foundation
 
-enum ACFTCalculatorError: Error {
+public enum ACFTCalculatorError: Error {
     // MARK: Errors
 
     /// An error that occurred while reading a CSV file or its contents.
-    case csvReaderFailure(reason: CSVReadingFailureReason)
-
+    case csvReadingFailure(reason: CSVReadingFailureReason)
 }
 
 // MARK: - CSVReadingFailureReason
 
-extension ACFTCalculatorError {
+public extension ACFTCalculatorError {
 
     enum CSVReadingFailureReason {
         case fileNotFound(fileName: String)
         case columnOutOfBounds(index: Int)
+        case pointsNotIntRepresentable(value: String)
     }
 
 }
