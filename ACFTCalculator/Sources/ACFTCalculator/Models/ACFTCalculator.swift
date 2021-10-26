@@ -8,11 +8,12 @@ public final class ACFTCalculator {
 
     // MARK: Properties
 
-    /// Represents the column of possible points one can receive for an ACFT event.
-    let points: [Int]
+    typealias Points = Int
+    typealias Pounds = Int
+    typealias PointsMapping<T: StringInitializable> = [(points: Points, value: T)]
 
     /// Represents the column of pounds used for the 3-repetition maximum deadlift event.
-    let deadliftPounds: [String]
+    let deadliftPounds: PointsMapping<Pounds>
 
     /// Represents the column of meters for the standing power throw event.
     let standingPowerThrowMeters: [String]
@@ -39,14 +40,9 @@ public final class ACFTCalculator {
     public init() throws {
         let csvReader = try CSVReader.acftScoringStandardsReader()
 
-        self.points = try csvReader.readColumn(.points).map {
-            guard let int = Int($0) else {
-                throw ACFTCalculatorError.csvReadingFailure(reason: .pointsNotIntRepresentable(value: $0))
-            }
-            return int
-        }
-
         self.deadliftPounds = try csvReader.readColumn(.deadlift)
+            .compactMapACFTColumnToPointsMapping()
+
         self.standingPowerThrowMeters = try csvReader.readColumn(.standingPowerThrow)
         self.handReleasePushUpRepetitions = try csvReader.readColumn(.handReleasePushUp)
         self.sprintDragCarryTimes = try csvReader.readColumn(.sprintDragCarry)
@@ -67,24 +63,62 @@ public final class ACFTCalculator {
     }
 
     private func calculatePointsForDeadlift(pounds: Int) -> Int {
-        for (index, value) in self.deadliftPounds.enumerated() {
-            // Skip over any empty strings.
-            guard !value.isEmpty else {
-                continue
-            }
-
+        for (points, value) in self.deadliftPounds {
             // Because not all possible pounds values are listed in the CSV, if the
-            // given input pounds value is greater than or equal to the current pounds
-            // value, the input pounds value will fall under the current pounds point value.
-            // Force-unwrapping as tests exist to validate CSV data is convertable to Int.
-            guard pounds >= Int(value)! else {
+            // given input is greater than or equal to the current value, returrn that value's
+            // matching points.
+            guard pounds >= value else {
                 continue
             }
 
-            return self.points[index]
+            return points
         }
 
         // For any value less than lowest possible pounds value, return 0 points.
         return 0
     }
+}
+
+// MARK: - CSV Column Mapping Utilities
+
+/// A type which can be initialized via a `String`.
+protocol StringInitializable {
+    init?(string: String)
+}
+
+extension Int: StringInitializable {
+    init?(string: String) {
+        guard let int = Int(string) else {
+            return nil
+        }
+        self = int
+    }
+}
+
+extension Array where Element == String {
+
+    /// Performs a compact mapping on an array of `String`s which represents a column of the ACFT Scoring Standards CSV.
+    /// This method will toss out any empty string values, then convert the remaining values to the given `StringInitializable` type.
+    /// - Throws: A `csvReadingFailure` error if conversion of the string to the `StringInitializable` type fails.
+    func compactMapACFTColumnToPointsMapping<T: StringInitializable>() throws -> ACFTCalculator.PointsMapping<T> {
+        return try self
+            .enumerated() // Enumerate so we can get the index and later turn it into a Points value.
+            .compactMap { (index, value) in
+                guard !value.isEmpty else {
+                    return nil
+                }
+
+                guard let convertedValue = T(string: value) else {
+                    throw ACFTCalculatorError.csvReadingFailure(reason: .invalidData)
+                }
+
+                // Possible points range from 100 to 0, and each column contains 101 values.
+                // Because each column is sorted from highest points (100) value to lowest (0),
+                // to calculate the points for the current value we can take it's index and
+                // subtract it from 100 possible points.
+                let points = 100 - index
+                return (points, convertedValue)
+            }
+    }
+
 }
