@@ -76,7 +76,7 @@ public final class ACFTCalculator {
         }
     }
 
-    private func calculatePointsForDeadlift(pounds: Int) -> Int {
+    private func calculatePointsForDeadlift(pounds: Pounds) -> Int {
         for (points, value) in self.deadliftPounds {
             // Because not all possible pounds values are listed in the CSV, if the
             // given input is greater than or equal to the current value, returrn that value's
