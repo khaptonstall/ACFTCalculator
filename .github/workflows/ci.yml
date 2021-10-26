@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2 # Fixes issues with codecov
       - name: Switch Xcode Version
         run: sudo xcode-select -switch "/Applications/Xcode_${{ matrix.xcode_version }}.app"
       - name: Run Tests
