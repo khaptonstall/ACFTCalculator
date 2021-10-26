@@ -111,7 +111,7 @@ private extension Array where Element == String {
                 }
 
                 guard let convertedValue = T(string: value) else {
-                    throw ACFTCalculatorError.csvReadingFailure(reason: .invalidData)
+                    throw ACFTCalculatorError.csvReadingFailure(reason: .dataConversionFailed(type: T.self, value: value))
                 }
 
                 // Possible points range from 100 to 0, and each column contains 101 values.

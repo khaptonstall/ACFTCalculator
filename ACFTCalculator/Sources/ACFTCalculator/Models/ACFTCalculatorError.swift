@@ -22,6 +22,7 @@ public extension ACFTCalculatorError {
         case fileNotFound(fileName: String)
         case columnOutOfBounds(index: Int)
         case invalidData
+        case dataConversionFailed(type: Any.Type, value: Any)
     }
 
 }
