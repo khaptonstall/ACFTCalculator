@@ -81,21 +81,7 @@ public final class ACFTCalculator {
 
 // MARK: - CSV Column Mapping Utilities
 
-/// A type which can be initialized via a `String`.
-protocol StringInitializable {
-    init?(string: String)
-}
-
-extension Int: StringInitializable {
-    init?(string: String) {
-        guard let int = Int(string) else {
-            return nil
-        }
-        self = int
-    }
-}
-
-extension Array where Element == String {
+private extension Array where Element == String {
 
     /// Performs a compact mapping on an array of `String`s which represents a column of the ACFT Scoring Standards CSV.
     /// This method will toss out any empty string values, then convert the remaining values to the given `StringInitializable` type.
