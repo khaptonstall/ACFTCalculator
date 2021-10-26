@@ -1,6 +1,7 @@
 # ACFTCalculator
 
 ![](https://github.com/khaptonstall/acftcalculator/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/khaptonstall/ACFTCalculator/branch/main/graph/badge.svg?token=9BSWQEXH2F)](https://codecov.io/gh/khaptonstall/ACFTCalculator)
 
 ACFTCalculator is a tool, written in Swift, for calculating Army Combat Fitness Test scores.
 
