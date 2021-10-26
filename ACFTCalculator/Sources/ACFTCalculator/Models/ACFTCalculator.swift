@@ -10,6 +10,7 @@ public final class ACFTCalculator {
 
     typealias Points = Int
     typealias Pounds = Int
+    typealias Repetitions = Int
     typealias PointsMapping<T: StringInitializable> = [(points: Points, value: T)]
 
     /// Represents the column of pounds used for the 3-repetition maximum deadlift event.
@@ -19,19 +20,19 @@ public final class ACFTCalculator {
     let standingPowerThrowMeters: [String]
 
     /// Represents the column of repetitions for the hand release push up event.
-    let handReleasePushUpRepetitions: [String]
+    let handReleasePushUpRepetitions: PointsMapping<Repetitions>
 
     /// Represents the column of times for the sprint-drag-carry event.
-    let sprintDragCarryTimes: [String]
+    let sprintDragCarryTimes: PointsMapping<RecordedTime>
 
     /// Represents the column of repetitions for the leg tuck event.
-    let legTuckRepetitions: [String]
+    let legTuckRepetitions: PointsMapping<Repetitions>
 
     /// Represents the column of times for the plank event.
-    let plankTimes: [String]
+    let plankTimes: PointsMapping<RecordedTime>
 
     /// Represents the column of times for the two-mile run event.
-    let twoMileRunTimes: [String]
+    let twoMileRunTimes: PointsMapping<RecordedTime>
 
     // MARK: Initialization
 
@@ -44,11 +45,21 @@ public final class ACFTCalculator {
             .compactMapACFTColumnToPointsMapping()
 
         self.standingPowerThrowMeters = try csvReader.readColumn(.standingPowerThrow)
+
         self.handReleasePushUpRepetitions = try csvReader.readColumn(.handReleasePushUp)
+            .compactMapACFTColumnToPointsMapping()
+
         self.sprintDragCarryTimes = try csvReader.readColumn(.sprintDragCarry)
+            .compactMapACFTColumnToPointsMapping()
+
         self.legTuckRepetitions = try csvReader.readColumn(.legTuck)
+            .compactMapACFTColumnToPointsMapping()
+
         self.plankTimes = try csvReader.readColumn(.plank)
+            .compactMapACFTColumnToPointsMapping()
+
         self.twoMileRunTimes = try csvReader.readColumn(.twoMileRun)
+            .compactMapACFTColumnToPointsMapping()
     }
 
     // MARK: Calculating Points
