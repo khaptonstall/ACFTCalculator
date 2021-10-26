@@ -1,0 +1,32 @@
+# See https://docs.codecov.com/docs/codecovyml-reference for details on yml properties and their usage/meaning.
+
+codecov:
+  require_ci_to_pass: yes # Whether or not codecov should wait for all other statuses to pass.
+
+coverage:
+  precision: 2 # Precision used when displaying coverage percentages.
+  round: down
+  range: "75...100" # Range of coverage value that gets a green status color.
+  status:
+    project:
+      default:
+        target: 75%    # the required coverage value
+        threshold: 1%  # the leniency in hitting the target
+
+# Using parser config from default codecov.yml file.
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+# Configuration for pull request comments.
+comment:
+  layout: "reach,diff,files,footer" # https://docs.codecov.com/docs/pull-request-comments#layout
+  behavior: default # update, if exists. Otherwise post new comment.
+  require_changes: no # if true: only post the comment if coverage changes
+
+ignore:
+  - "ACFTCalculator/Tests/**"  # Ignore actual test files from being included in test reports.
