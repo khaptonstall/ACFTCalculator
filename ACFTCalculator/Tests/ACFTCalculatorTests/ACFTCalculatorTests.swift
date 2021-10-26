@@ -49,4 +49,43 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: pounds)), 0)
     }
 
+    // MARK: Sprint Drag Carry Calculator Tests
+
+    func testCalculatingSprintDragCarryPointsForListedTimeValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is explicitly listed on the CSV.
+        // 3:00 minutes should equate to 60 points.
+        let time = RecordedTime(minutes: 3, seconds: 0)
+        XCTAssertTrue(calculator.sprintDragCarryTimes.map { $0.value }.contains(time))
+
+        let points = calculator.calculatePoints(for: .sprintDragCarry(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingSprintDragCarryPointsForTimeValueFasterThanFastestListedTimeReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is faster than the fasted listed time.
+        // 1:33 is the fastest value, so use one that is faster than that.
+        let time = RecordedTime(minutes: 0, seconds: 30)
+        let fastestTimeValue = try XCTUnwrap(calculator.sprintDragCarryTimes.last?.value)
+        XCTAssertLessThan(time, fastestTimeValue)
+
+        let points = calculator.calculatePoints(for: .sprintDragCarry(time: time))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingSprintDragCarryPointsForTimeValueSlowerThanSlowestListedTimeValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is slower than the slowest listed time.
+        // 3:35 is the slowest value, so use one that is slower than that.
+        let time = RecordedTime(minutes: 10, seconds: 0)
+        let slowestTimeValue = try XCTUnwrap(calculator.sprintDragCarryTimes.last?.value)
+        XCTAssertGreaterThan(time, slowestTimeValue)
+
+        let points = calculator.calculatePoints(for: .sprintDragCarry(time: time))
+        XCTAssertEqual(points, 0)
+    }
 }

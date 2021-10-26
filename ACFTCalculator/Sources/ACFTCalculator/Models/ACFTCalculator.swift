@@ -4,6 +4,7 @@ public final class ACFTCalculator {
 
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
+        case sprintDragCarry(time: RecordedTime)
     }
 
     // MARK: Properties
@@ -70,6 +71,8 @@ public final class ACFTCalculator {
         switch event {
         case .threeRepetitionMaximumDeadlift(let pounds):
             return self.calculatePointsForDeadlift(pounds: pounds)
+        case .sprintDragCarry(let time):
+            return self.calculatePointsForSprintDragCarry(time: time)
         }
     }
 
@@ -86,6 +89,22 @@ public final class ACFTCalculator {
         }
 
         // For any value less than lowest possible pounds value, return 0 points.
+        return 0
+    }
+
+    private func calculatePointsForSprintDragCarry(time: RecordedTime) -> Int {
+        for (points, value) in self.sprintDragCarryTimes {
+            // Sprint-drag-carry values will be listed in increasing order.
+            // If the input time is less than or equal to the current time value,
+            // then bucket the input time under the current points value.
+            if time <= value {
+                return points
+            } else {
+                continue
+            }
+        }
+
+        // For any time slower than the slowest scoring time value, return 0 points.
         return 0
     }
 }
