@@ -99,8 +99,13 @@ extension Array where Element == String {
 
     /// Performs a compact mapping on an array of `String`s which represents a column of the ACFT Scoring Standards CSV.
     /// This method will toss out any empty string values, then convert the remaining values to the given `StringInitializable` type.
-    /// - Throws: A `csvReadingFailure` error if conversion of the string to the `StringInitializable` type fails.
+    /// - Throws: A `csvReadingFailure` error if the array (column) contains the incorrect number of values or if conversion of the string to the `StringInitializable` type fails.
     func compactMapACFTColumnToPointsMapping<T: StringInitializable>() throws -> ACFTCalculator.PointsMapping<T> {
+        // The array (column) of data should contain 101 entries, corresponding to the possible range of points (100 to 0).
+        guard self.count == 101 else {
+            throw ACFTCalculatorError.csvReadingFailure(reason: .invalidData)
+        }
+
         return try self
             .enumerated() // Enumerate so we can get the index and later turn it into a Points value.
             .compactMap { (index, value) in
