@@ -12,6 +12,22 @@ public struct RecordedTime {
     public let seconds: Int
 }
 
+// MARK: - Comparable
+
+extension RecordedTime: Comparable {
+
+    public static func < (lhs: RecordedTime, rhs: RecordedTime) -> Bool {
+        if lhs.minutes < rhs.minutes {
+            return true
+        } else if lhs.minutes == rhs.minutes && lhs.seconds < rhs.seconds {
+            return true
+        } else {
+            return false
+        }
+    }
+
+}
+
 // MARK: - StringInitializable
 
 extension RecordedTime: StringInitializable {
