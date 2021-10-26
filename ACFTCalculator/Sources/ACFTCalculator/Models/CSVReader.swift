@@ -43,7 +43,7 @@ struct CSVReader {
             rows.removeFirst()
         }
 
-        return rows.map { $0.components(separatedBy: ",") }
+        return rows.map { $0.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: ",") }
     }
 
     /// Reads an individual column of the CSV.
