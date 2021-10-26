@@ -21,7 +21,7 @@ public extension ACFTCalculatorError {
     enum CSVReadingFailureReason {
         case fileNotFound(fileName: String)
         case columnOutOfBounds(index: Int)
-        case pointsNotIntRepresentable(value: String)
+        case invalidData
     }
 
 }
