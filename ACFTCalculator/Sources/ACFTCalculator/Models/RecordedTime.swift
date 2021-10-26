@@ -8,8 +8,17 @@
 import Foundation
 
 public struct RecordedTime {
+    // MARK: Properties
+
     public let minutes: Int
     public let seconds: Int
+
+    // MARK: Initialization
+
+    public init(minutes: Int, seconds: Int) {
+        self.minutes = minutes
+        self.seconds = seconds
+    }
 }
 
 // MARK: - Comparable
