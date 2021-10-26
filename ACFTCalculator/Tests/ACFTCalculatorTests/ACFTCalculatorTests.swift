@@ -11,7 +11,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
     // MARK: Deadlift Calculator Tests
 
-    func testCalculatingPointsForListedPoundsValueReturnsCorrectPointsValue() throws {
+    func testCalculatingDeadliftPointsForListedPoundsValueReturnsCorrectPointsValue() throws {
         let calculator = try ACFTCalculator()
 
         // Use a pounds value that is explicitly listed on the CSV.
@@ -23,7 +23,7 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(points, 60)
     }
 
-    func testCalculatingPointsForUnlistedPoundsValueReturnsPointsForNextSmallestPoundsValue() throws {
+    func testCalculatingDeadliftPointsForUnlistedPoundsValueReturnsPointsForNextSmallestPoundsValue() throws {
         let calculator = try ACFTCalculator()
 
         // Use a pounds value that is not explicitly listed on the CSV.
@@ -36,7 +36,7 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(points, 50)
     }
 
-    func testCalculatingPointsForPoundsValueLessThanMinimumValueReturnsZeroPoints() throws {
+    func testCalculatingDeadliftPointsForPoundsValueLessThanMinimumValueReturnsZeroPoints() throws {
         let calculator = try ACFTCalculator()
 
         // Use a pounds value that is less than the minimum pounds value (80 pounds).
