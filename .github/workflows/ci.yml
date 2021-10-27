@@ -91,4 +91,4 @@ jobs:
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
         with:
-          files: ${{ env.DEPLOY_DIRECTORY }}
+          directory: ${{ env.DEPLOY_DIRECTORY }}
