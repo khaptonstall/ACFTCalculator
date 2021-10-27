@@ -129,4 +129,44 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(points, 0)
     }
 
+    // MARK: Two-Mile Run Calculator Tests
+
+    func testCalculatingTwoMileRunPointsForListedTimeValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is explicitly listed on the CSV.
+        // 21:00 minutes should equate to 60 points.
+        let time = RecordedTime(minutes: 21, seconds: 0)
+        XCTAssertTrue(calculator.twoMileRunTimes.map { $0.value }.contains(time))
+
+        let points = calculator.calculatePoints(for: .twoMileRun(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingTwoMileRunPointsForTimeValueFasterThanFastestListedTimeReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is faster than the fasted listed time.
+        // 13:30 is the fastest value, so use one that is faster than that.
+        let time = RecordedTime(minutes: 12, seconds: 30)
+        let fastestTimeValue = try XCTUnwrap(calculator.twoMileRunTimes.first?.value)
+        XCTAssertLessThan(time, fastestTimeValue)
+
+        let points = calculator.calculatePoints(for: .twoMileRun(time: time))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingTwoMileRunPointsForTimeValueSlowerThanSlowestListedTimeValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is slower than the slowest listed time.
+        // 22:48 is the slowest value, so use one that is slower than that.
+        let time = RecordedTime(minutes: 23, seconds: 0)
+        let slowestTimeValue = try XCTUnwrap(calculator.twoMileRunTimes.last?.value)
+        XCTAssertGreaterThan(time, slowestTimeValue)
+
+        let points = calculator.calculatePoints(for: .twoMileRun(time: time))
+        XCTAssertEqual(points, 0)
+    }
+
 }

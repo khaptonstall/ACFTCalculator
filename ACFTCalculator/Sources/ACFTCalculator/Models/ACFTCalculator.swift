@@ -6,6 +6,7 @@ public final class ACFTCalculator {
         case threeRepetitionMaximumDeadlift(pounds: Int)
         case sprintDragCarry(time: RecordedTime)
         case plank(time: RecordedTime)
+        case twoMileRun(time: RecordedTime)
     }
 
     // MARK: Properties
@@ -76,6 +77,8 @@ public final class ACFTCalculator {
             return self.calculatePointsForSprintDragCarry(time: time)
         case .plank(let time):
             return self.calculatePointsForPlank(time: time)
+        case .twoMileRun(let time):
+            return self.calculatePointsForTwoMileRun(time: time)
         }
     }
 
@@ -125,6 +128,23 @@ public final class ACFTCalculator {
         }
 
         // For any time less than the shortest listed time value, return 0 points.
+        return 0
+    }
+
+    private func calculatePointsForTwoMileRun(time: RecordedTime) -> Int {
+        for (points, value) in self.twoMileRunTimes {
+            // Two-mile run values will be listed in increasing order (such that the
+            // longer it takes to complete two miles, the lower the points). If the input time
+            // is less than or equal to the current time value, then bucket
+            // the input time under the current points value.
+            if time <= value {
+                return points
+            } else {
+                continue
+            }
+        }
+
+        // For any time longer than the longest listed time value, return 0 points.
         return 0
     }
 
