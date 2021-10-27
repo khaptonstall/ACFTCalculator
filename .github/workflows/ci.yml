@@ -39,4 +39,50 @@ jobs:
           name: "iOS ${{ matrix.ios_version }} ${{ matrix.device_name }} Output"
           path: ${{ env.DEPLOY_DIRECTORY }}
       - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v1.2.1
+        uses: codecov/codecov-action@v2
+  test-macos:
+    name: Test on MacOS 11
+    runs-on: macos-11
+    strategy:
+      matrix:
+        xcode_version: ["13.0"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2 # Fixes issues with codecov
+      - name: Switch Xcode Version
+        run: sudo xcode-select -switch "/Applications/Xcode_${{ matrix.xcode_version }}.app"
+      - name: Run Tests
+        run: sh ./scripts/xcode_build.sh "platform=macOS"
+      - name: Upload Step Output
+        uses: actions/upload-artifact@v1
+        with:
+          name: "macOS Output"
+          path: ${{ env.DEPLOY_DIRECTORY }}
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
+  test-tvos:
+    name: Test on tvOS ${{ matrix.tvos_version }}
+    runs-on: macos-11
+    strategy:
+      matrix:
+        tvos_version: ["15.0"]
+        device_name: ["Apple TV 4K"]
+        xcode_version: ["13.0"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2 # Fixes issues with codecov
+      - name: Switch Xcode Version
+        run: sudo xcode-select -switch "/Applications/Xcode_${{ matrix.xcode_version }}.app"
+      - name: Run Tests
+        run: sh ./scripts/xcode_build.sh "name=${{ matrix.device_name }},OS=${{ matrix.tvos_version }},platform=tvOS Simulator"
+      - name: Upload Step Output
+        uses: actions/upload-artifact@v1
+        with:
+          name: "tvOS ${{ matrix.tvos_version }} ${{ matrix.device_name }} Output"
+          path: ${{ env.DEPLOY_DIRECTORY }}
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2
