@@ -41,7 +41,7 @@ jobs:
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v2
   test-macos:
-    name: Test on MacOS ${{ matrix.ios_version }}
+    name: Test on MacOS 11
     runs-on: macos-11
     strategy:
       matrix:
