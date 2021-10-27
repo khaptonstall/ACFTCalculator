@@ -21,7 +21,7 @@ jobs:
     runs-on: macos-11
     strategy:
       matrix:
-        ios_version: ["15.0", "14.0"]
+        ios_version: ["15.0"]
         device_name: ["iPhone 13"]
         xcode_version: ["13.0"]
     steps:
@@ -67,7 +67,7 @@ jobs:
     runs-on: macos-11
     strategy:
       matrix:
-        tvos_version: ["15.0", "14.0"]
+        tvos_version: ["15.0"]
         device_name: ["Apple TV 4K"]
         xcode_version: ["13.0"]
     steps:
