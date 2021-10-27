@@ -88,4 +88,45 @@ final class ACFTCalculatorTests: XCTestCase {
         let points = calculator.calculatePoints(for: .sprintDragCarry(time: time))
         XCTAssertEqual(points, 0)
     }
+
+    // MARK: Plank Calculator Tests
+
+    func testCalculatingPlankPointsForListedTimeValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is explicitly listed on the CSV.
+        // 2:09 minutes should equate to 60 points.
+        let time = RecordedTime(minutes: 2, seconds: 9)
+        XCTAssertTrue(calculator.plankTimes.map { $0.value }.contains(time))
+
+        let points = calculator.calculatePoints(for: .plank(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingPlankPointsForTimeValueLongerThanLongestListedTimeReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is longer than the longest listed time.
+        // 4:20 is the longest listed value, so use one that is longer than that.
+        let time = RecordedTime(minutes: 5, seconds: 0)
+        let longestTimeValue = try XCTUnwrap(calculator.plankTimes.first?.value)
+        XCTAssertGreaterThan(time, longestTimeValue)
+
+        let points = calculator.calculatePoints(for: .plank(time: time))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingPlankPointsForTimeValueShorterThanShortestListedTimeValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time value that is shorte than the shortest listed time.
+        // 2:03 is the shortest listed value, so use one that is shorter than that.
+        let time = RecordedTime(minutes: 1, seconds: 0)
+        let shortestTimeValue = try XCTUnwrap(calculator.plankTimes.last?.value)
+        XCTAssertLessThan(time, shortestTimeValue)
+
+        let points = calculator.calculatePoints(for: .plank(time: time))
+        XCTAssertEqual(points, 0)
+    }
+
 }

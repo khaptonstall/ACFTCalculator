@@ -5,6 +5,7 @@ public final class ACFTCalculator {
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
         case sprintDragCarry(time: RecordedTime)
+        case plank(time: RecordedTime)
     }
 
     // MARK: Properties
@@ -73,6 +74,8 @@ public final class ACFTCalculator {
             return self.calculatePointsForDeadlift(pounds: pounds)
         case .sprintDragCarry(let time):
             return self.calculatePointsForSprintDragCarry(time: time)
+        case .plank(let time):
+            return self.calculatePointsForPlank(time: time)
         }
     }
 
@@ -107,6 +110,24 @@ public final class ACFTCalculator {
         // For any time slower than the slowest scoring time value, return 0 points.
         return 0
     }
+
+    private func calculatePointsForPlank(time: RecordedTime) -> Int {
+        for (points, value) in self.plankTimes {
+            // Plank values will be listed in decreasing order (such that the
+            // longer you hold a plank, the higher the points). If the input time
+            // is greater than or equal to the current time value, then
+            // bucket the input time under the current points value.
+            if time >= value {
+                return points
+            } else {
+                continue
+            }
+        }
+
+        // For any time less than the shortest listed time value, return 0 points.
+        return 0
+    }
+
 }
 
 // MARK: - CSV Column Mapping Utilities
