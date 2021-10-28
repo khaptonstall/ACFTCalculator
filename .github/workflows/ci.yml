@@ -34,12 +34,10 @@ jobs:
       - name: Run Tests
         run: sh ./scripts/xcode_build.sh "name=${{ matrix.device_name }},OS=${{ matrix.ios_version }},platform=iOS Simulator"
       - name: Upload Step Output
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: "iOS ${{ matrix.ios_version }} ${{ matrix.device_name }} Output"
+          name: "tests"
           path: ${{ env.DEPLOY_DIRECTORY }}
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
   test-macos:
     name: Test on MacOS 11
     runs-on: macos-11
@@ -56,12 +54,10 @@ jobs:
       - name: Run Tests
         run: sh ./scripts/xcode_build.sh "platform=macOS"
       - name: Upload Step Output
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: "macOS Output"
           path: ${{ env.DEPLOY_DIRECTORY }}
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
   test-tvos:
     name: Test on tvOS ${{ matrix.tvos_version }}
     runs-on: macos-11
@@ -80,9 +76,19 @@ jobs:
       - name: Run Tests
         run: sh ./scripts/xcode_build.sh "name=${{ matrix.device_name }},OS=${{ matrix.tvos_version }},platform=tvOS Simulator"
       - name: Upload Step Output
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: "tvOS ${{ matrix.tvos_version }} ${{ matrix.device_name }} Output"
           path: ${{ env.DEPLOY_DIRECTORY }}
-      - name: Upload Coverage to Codecov
-        uses: codecov/codecov-action@v2
+  upload-to-codecov:
+    needs: [test-ios, test-macos, test-tvos]
+    runs-on: macos-11
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v1.2.1
+        with:
+            directory: ./tests
