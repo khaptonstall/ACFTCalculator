@@ -17,13 +17,14 @@ public final class ACFTCalculator {
     typealias Points = Int
     typealias Pounds = Int
     typealias Repetitions = Int
+    typealias Meters = Float
     typealias PointsMapping<T: StringInitializable> = [(points: Points, value: T)]
 
     /// Represents the column of pounds used for the 3-repetition maximum deadlift event.
     let deadliftPounds: PointsMapping<Pounds>
 
     /// Represents the column of meters for the standing power throw event.
-    let standingPowerThrowMeters: [String]
+    let standingPowerThrowMeters: PointsMapping<Meters>
 
     /// Represents the column of repetitions for the hand release push up event.
     let handReleasePushUpRepetitions: PointsMapping<Repetitions>
@@ -51,6 +52,7 @@ public final class ACFTCalculator {
             .compactMapACFTColumnToPointsMapping()
 
         self.standingPowerThrowMeters = try csvReader.readColumn(.standingPowerThrow)
+            .compactMapACFTColumnToPointsMapping()
 
         self.handReleasePushUpRepetitions = try csvReader.readColumn(.handReleasePushUp)
             .compactMapACFTColumnToPointsMapping()
