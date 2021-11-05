@@ -129,6 +129,46 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(points, 0)
     }
 
+    // MARK: Leg Tuck Calculator Tests
+
+    func testCalculatingLegTuckPointsForListedRepsValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is explicitly listed on the CSV.
+        // 1 rep should equate to 60 points.
+        let repetitions = 1
+        XCTAssertTrue(calculator.legTuckRepetitions.map { $0.value }.contains(repetitions))
+
+        let points = calculator.calculatePoints(for: .legTuck(repetitions: repetitions))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingLegTuckPointsForRepsValueHigherThanHighestListedRepsReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is higher than the highest listed value.
+        // 20 reps is the highest value, so use one that is higher than that.
+        let repetitions = 30
+        let highestRepetitionsValue = try XCTUnwrap(calculator.legTuckRepetitions.first?.value)
+        XCTAssertGreaterThan(repetitions, highestRepetitionsValue)
+
+        let points = calculator.calculatePoints(for: .legTuck(repetitions: repetitions))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingLegTuckPointsForRepsValueLowerThanLowestListedRepsValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is lower than the lowest listed value.
+        // 0 reps is the lowest value, so we'll use a negative value.
+        let repetitions = -1
+        let lowestRepetitionsValue = try XCTUnwrap(calculator.legTuckRepetitions.last?.value)
+        XCTAssertLessThan(repetitions, lowestRepetitionsValue)
+
+        let points = calculator.calculatePoints(for: .legTuck(repetitions: repetitions))
+        XCTAssertEqual(points, 0)
+    }
+
     // MARK: Plank Calculator Tests
 
     func testCalculatingPlankPointsForListedTimeValueReturnsCorrectPointsValue() throws {

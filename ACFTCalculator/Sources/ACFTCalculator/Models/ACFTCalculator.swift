@@ -6,6 +6,7 @@ public final class ACFTCalculator {
         case threeRepetitionMaximumDeadlift(pounds: Int)
         case handReleasePushUp(repetitions: Int)
         case sprintDragCarry(time: RecordedTime)
+        case legTuck(repetitions: Int)
         case plank(time: RecordedTime)
         case twoMileRun(time: RecordedTime)
     }
@@ -78,6 +79,8 @@ public final class ACFTCalculator {
             return self.calculatePointsForHandReleasePushUp(repetitions: repetitions)
         case .sprintDragCarry(let time):
             return self.calculatePointsForSprintDragCarry(time: time)
+        case .legTuck(let repetitions):
+            return self.calculatePointsForLegTuck(repetitions: repetitions)
         case .plank(let time):
             return self.calculatePointsForPlank(time: time)
         case .twoMileRun(let time):
@@ -129,6 +132,22 @@ public final class ACFTCalculator {
         }
 
         // For any time slower than the slowest scoring time value, return 0 points.
+        return 0
+    }
+
+    private func calculatePointsForLegTuck(repetitions: Repetitions) -> Int {
+        for (points, value) in self.legTuckRepetitions {
+            // Leg tuck values will be listed in decreasing order.
+            // If the input repetitions is greater than or equal to the current repetitions
+            // value, then bucket the input repetitions under the currrent points value.
+            if repetitions >= value {
+                return points
+            } else {
+                continue
+            }
+        }
+
+        // For any number of repetitions lower than the lowest listed value, return 0 points.
         return 0
     }
 
