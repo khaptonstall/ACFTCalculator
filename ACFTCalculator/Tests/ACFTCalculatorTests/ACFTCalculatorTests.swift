@@ -49,6 +49,46 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: pounds)), 0)
     }
 
+    // MARK: Hand Release Push Up Calculator Tests
+
+    func testCalculatingHandReleasePushUpPointsForListedRepsValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is explicitly listed on the CSV.
+        // 10 reps should equate to 60 points.
+        let repetitions = 10
+        XCTAssertTrue(calculator.handReleasePushUpRepetitions.map { $0.value }.contains(repetitions))
+
+        let points = calculator.calculatePoints(for: .handReleasePushUp(repetitions: repetitions))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingHandReleasePushUpPointsForRepsValueHigherThanHighestListedRepsReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is higher than the highest listed value.
+        // 60 reps is the highest value, so use one that is higher than that.
+        let repetitions = 100
+        let highestRepetitionsValue = try XCTUnwrap(calculator.handReleasePushUpRepetitions.first?.value)
+        XCTAssertGreaterThan(repetitions, highestRepetitionsValue)
+
+        let points = calculator.calculatePoints(for: .handReleasePushUp(repetitions: repetitions))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingHandReleasePushUpPointsForRepsValueLowerThanLowestListedRepsValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is lower than the lowest listed value.
+        // 0 reps is the lowest value, so we'll use a negative value.
+        let repetitions = -1
+        let lowestRepetitionsValue = try XCTUnwrap(calculator.handReleasePushUpRepetitions.last?.value)
+        XCTAssertLessThan(repetitions, lowestRepetitionsValue)
+
+        let points = calculator.calculatePoints(for: .handReleasePushUp(repetitions: repetitions))
+        XCTAssertEqual(points, 0)
+    }
+
     // MARK: Sprint Drag Carry Calculator Tests
 
     func testCalculatingSprintDragCarryPointsForListedTimeValueReturnsCorrectPointsValue() throws {
