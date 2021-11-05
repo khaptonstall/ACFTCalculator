@@ -4,6 +4,7 @@ public final class ACFTCalculator {
 
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
+        case handReleasePushUp(repetitions: Int)
         case sprintDragCarry(time: RecordedTime)
         case plank(time: RecordedTime)
         case twoMileRun(time: RecordedTime)
@@ -73,6 +74,8 @@ public final class ACFTCalculator {
         switch event {
         case .threeRepetitionMaximumDeadlift(let pounds):
             return self.calculatePointsForDeadlift(pounds: pounds)
+        case .handReleasePushUp(let repetitions):
+            return self.calculatePointsForHandReleasePushUp(repetitions: repetitions)
         case .sprintDragCarry(let time):
             return self.calculatePointsForSprintDragCarry(time: time)
         case .plank(let time):
@@ -95,6 +98,21 @@ public final class ACFTCalculator {
         }
 
         // For any value less than lowest possible pounds value, return 0 points.
+        return 0
+    }
+
+    private func calculatePointsForHandReleasePushUp(repetitions: Repetitions) -> Int {
+        for (points, value) in self.handReleasePushUpRepetitions {
+            // Hand release push up values will be listed in decreasing order.
+            // If the input repetitions is greater than or equal to the current repetitions
+            // value, then bucket the input repetitions under the currrent points value.
+            if repetitions >= value {
+                return points
+            } else {
+                continue
+            }
+        }
+
         return 0
     }
 
