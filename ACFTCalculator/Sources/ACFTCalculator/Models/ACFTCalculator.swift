@@ -5,6 +5,7 @@ import Foundation
 public final class ACFTCalculator {
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
+        case standingPowerThrow(meters: Float)
         case handReleasePushUp(repetitions: Int)
         case sprintDragCarry(time: RecordedTime)
         case legTuck(repetitions: Int)
@@ -84,6 +85,10 @@ public final class ACFTCalculator {
         case let .threeRepetitionMaximumDeadlift(pounds):
             return self.calculatePoints(forValue: pounds,
                                         pointsMapping: self.deadliftPounds,
+                                        order: .descending)
+        case let .standingPowerThrow(meters):
+            return self.calculatePoints(forValue: meters,
+                                        pointsMapping: self.standingPowerThrowMeters,
                                         order: .descending)
         case let .handReleasePushUp(repetitions):
             return self.calculatePoints(forValue: repetitions,
