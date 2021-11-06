@@ -1,7 +1,8 @@
+// Copyright © 2021 Kyle Haptonstall.
+
 import Foundation
 
 public final class ACFTCalculator {
-
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
         case handReleasePushUp(repetitions: Int)
@@ -78,30 +79,30 @@ public final class ACFTCalculator {
     /// - Parameter event: The `ACFTEvent` and data necessary to calculate points earned.
     public func calculatePoints(for event: ACFTEvent) -> Int {
         switch event {
-        case .threeRepetitionMaximumDeadlift(let pounds):
+        case let .threeRepetitionMaximumDeadlift(pounds):
             return self.calculatePoints(forValue: pounds,
-                                    pointsMapping: self.deadliftPounds,
-                                    order: .descending)
-        case .handReleasePushUp(let repetitions):
+                                        pointsMapping: self.deadliftPounds,
+                                        order: .descending)
+        case let .handReleasePushUp(repetitions):
             return self.calculatePoints(forValue: repetitions,
-                                    pointsMapping: self.handReleasePushUpRepetitions,
-                                    order: .descending)
-        case .sprintDragCarry(let time):
+                                        pointsMapping: self.handReleasePushUpRepetitions,
+                                        order: .descending)
+        case let .sprintDragCarry(time):
             return self.calculatePoints(forValue: time,
-                                    pointsMapping: self.sprintDragCarryTimes,
-                                    order: .ascending)
-        case .legTuck(let repetitions):
+                                        pointsMapping: self.sprintDragCarryTimes,
+                                        order: .ascending)
+        case let .legTuck(repetitions):
             return self.calculatePoints(forValue: repetitions,
-                                    pointsMapping: self.legTuckRepetitions,
-                                    order: .descending)
-        case .plank(let time):
+                                        pointsMapping: self.legTuckRepetitions,
+                                        order: .descending)
+        case let .plank(time):
             return self.calculatePoints(forValue: time,
-                                    pointsMapping: self.plankTimes,
-                                    order: .descending)
-        case .twoMileRun(let time):
+                                        pointsMapping: self.plankTimes,
+                                        order: .descending)
+        case let .twoMileRun(time):
             return self.calculatePoints(forValue: time,
-                                    pointsMapping: self.twoMileRunTimes,
-                                    order: .ascending)
+                                        pointsMapping: self.twoMileRunTimes,
+                                        order: .ascending)
         }
     }
 
@@ -112,8 +113,8 @@ public final class ACFTCalculator {
     ///   - order: The order in which the CSV column values for the given points mapping are organized.
     /// - Returns: The number of points (0-100) the given input correlates to.
     private func calculatePoints<T: Comparable>(forValue inputValue: T,
-                                           pointsMapping: PointsMapping<T>,
-                                           order: ColumnValueOrder) -> Int {
+                                                pointsMapping: PointsMapping<T>,
+                                                order: ColumnValueOrder) -> Int {
         for (points, csvValue) in pointsMapping {
             switch order {
             case .ascending:
@@ -130,13 +131,11 @@ public final class ACFTCalculator {
         }
         return 0
     }
-
 }
 
 // MARK: - CSV Column Mapping Utilities
 
 private extension Array where Element == String {
-
     /// Performs a compact mapping on an array of `String`s which represents a column of the ACFT Scoring Standards CSV.
     /// This method will toss out any empty string values, then convert the remaining values to the given `StringInitializable` type.
     /// - Throws: A `csvReadingFailure` error if the array (column) contains the incorrect number of values or if conversion of the string to the `StringInitializable` type fails.
@@ -148,7 +147,7 @@ private extension Array where Element == String {
 
         return try self
             .enumerated() // Enumerate so we can get the index and later turn it into a Points value.
-            .compactMap { (index, value) in
+            .compactMap { index, value in
                 guard !value.isEmpty else {
                     return nil
                 }
@@ -165,5 +164,4 @@ private extension Array where Element == String {
                 return (points, convertedValue)
             }
     }
-
 }

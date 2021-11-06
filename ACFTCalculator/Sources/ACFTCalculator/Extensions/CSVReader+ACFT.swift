@@ -1,9 +1,4 @@
-//
-//  CSVReader+ACFT.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/24/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 import Foundation
 
@@ -28,5 +23,4 @@ extension CSVReader {
     static func acftScoringStandardsReader() throws -> CSVReader {
         return try CSVReader(csvFileName: "ACFTScoringStandards")
     }
-
 }

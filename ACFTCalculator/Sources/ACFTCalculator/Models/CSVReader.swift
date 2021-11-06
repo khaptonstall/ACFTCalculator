@@ -1,9 +1,4 @@
-//
-//  CSVReader.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/24/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 import Foundation
 
@@ -54,11 +49,10 @@ struct CSVReader {
     func readColumn(atIndex index: Int, removeHeader: Bool = true) throws -> [String] {
         return try self.readRows(removeHeaders: removeHeader)
             .map { row in
-            guard row.indices.contains(index) else {
-                throw ACFTCalculatorError.csvReadingFailure(reason: .columnOutOfBounds(index: index))
+                guard row.indices.contains(index) else {
+                    throw ACFTCalculatorError.csvReadingFailure(reason: .columnOutOfBounds(index: index))
+                }
+                return row[index]
             }
-            return row[index]
-        }
     }
-
 }

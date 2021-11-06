@@ -1,9 +1,4 @@
-//
-//  RecordedTime.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/25/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 import Foundation
 
@@ -24,17 +19,15 @@ public struct RecordedTime {
 // MARK: - Comparable
 
 extension RecordedTime: Comparable {
-
     public static func < (lhs: RecordedTime, rhs: RecordedTime) -> Bool {
         if lhs.minutes < rhs.minutes {
             return true
-        } else if lhs.minutes == rhs.minutes && lhs.seconds < rhs.seconds {
+        } else if lhs.minutes == rhs.minutes, lhs.seconds < rhs.seconds {
             return true
         } else {
             return false
         }
     }
-
 }
 
 // MARK: - StringInitializable

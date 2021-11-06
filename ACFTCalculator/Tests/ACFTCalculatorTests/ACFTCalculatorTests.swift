@@ -1,8 +1,9 @@
-import XCTest
+// Copyright © 2021 Kyle Haptonstall.
+
 @testable import ACFTCalculator
+import XCTest
 
 final class ACFTCalculatorTests: XCTestCase {
-
     // MARK: Tests
 
     func testInitDoesNotThrow() {
@@ -248,5 +249,4 @@ final class ACFTCalculatorTests: XCTestCase {
         let points = calculator.calculatePoints(for: .twoMileRun(time: time))
         XCTAssertEqual(points, 0)
     }
-
 }

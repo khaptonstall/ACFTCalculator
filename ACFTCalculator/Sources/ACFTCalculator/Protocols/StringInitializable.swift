@@ -1,9 +1,4 @@
-//
-//  StringInitializable.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/25/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 import Foundation
 
@@ -11,6 +6,8 @@ import Foundation
 protocol StringInitializable {
     init?(string: String)
 }
+
+// MARK: - Int + StringInitializable
 
 extension Int: StringInitializable {
     init?(string: String) {
