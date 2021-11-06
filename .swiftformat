@@ -1,3 +1,9 @@
+#----------------#
+# Opt-In Rules   #
+#----------------#
+
+--enable marktypes
+
 #--------------------#
 # Rule Configuration #
 #--------------------#
@@ -32,6 +38,10 @@
 # Convert trivial "map { $0.foo }" closures to keyPath-based syntax.
 # Disabled for false positive matches creating breaking changes.
 --disable preferKeyPath
+
+# Removes return within closures as well as the new Swift 5 implicit return.
+# Disabled because this rule is non-configurable.
+--disable redundantReturn 
 
 # Wrap the opening brace of multiline statements.
 # Disabled because this rule is non-configurable.
