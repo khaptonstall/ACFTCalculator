@@ -1,0 +1,44 @@
+#--------------------#
+# Rule Configuration #
+#--------------------#
+
+# Sets a common header on all files
+--header "Copyright © {year} Kyle Haptonstall."
+
+# Don't add MARKs to type definitions.
+--marktypes "never"
+
+# Formats MARKs for extensions grouped with the extended type as "MARK: - String + FooProtocol"
+# This matches the default MARK style for the "extensionmark" option.
+--groupedextension "MARK: - %t + %c"
+
+# Makes sure the self. prefix is added where appropriate.
+--self insert 
+
+# Only strips unused arguments (replacing with _) in closures, not methods.
+--stripunusedargs closure-only 
+
+# Only trims whitespace on nonblank-lines to avoid Xcode inconsistencies.
+--trimwhitespace nonblank-lines
+
+#----------------#
+# Disabled Rules #
+#----------------#
+
+# Add "@available(*, unavailable)" attribute to "required init(coder:)" when it hasn't been implemented.
+# Disabled because this rule can trigger incorrectly and create breaking changes.
+--disable initCoderUnavailable
+
+# Convert trivial "map { $0.foo }" closures to keyPath-based syntax.
+# Disabled for false positive matches creating breaking changes.
+--disable preferKeyPath
+
+# Wrap the opening brace of multiline statements.
+# Disabled because this rule is non-configurable.
+--disable wrapMultilineStatementBraces
+
+#-----------------#
+# File Exclusions #
+#-----------------#
+
+--exclude */Package.swift
