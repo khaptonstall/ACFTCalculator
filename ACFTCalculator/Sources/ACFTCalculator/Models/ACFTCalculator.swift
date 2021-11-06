@@ -69,119 +69,65 @@ public final class ACFTCalculator {
 
     // MARK: Calculating Points
 
+    private enum ColumnValueOrder {
+        case ascending
+        case descending
+    }
+
     /// Calculates points earned for a given event.
     /// - Parameter event: The `ACFTEvent` and data necessary to calculate points earned.
     public func calculatePoints(for event: ACFTEvent) -> Int {
         switch event {
         case .threeRepetitionMaximumDeadlift(let pounds):
-            return self.calculatePointsForDeadlift(pounds: pounds)
+            return self.calculatePoints(forValue: pounds,
+                                    pointsMapping: self.deadliftPounds,
+                                    order: .descending)
         case .handReleasePushUp(let repetitions):
-            return self.calculatePointsForHandReleasePushUp(repetitions: repetitions)
+            return self.calculatePoints(forValue: repetitions,
+                                    pointsMapping: self.handReleasePushUpRepetitions,
+                                    order: .descending)
         case .sprintDragCarry(let time):
-            return self.calculatePointsForSprintDragCarry(time: time)
+            return self.calculatePoints(forValue: time,
+                                    pointsMapping: self.sprintDragCarryTimes,
+                                    order: .ascending)
         case .legTuck(let repetitions):
-            return self.calculatePointsForLegTuck(repetitions: repetitions)
+            return self.calculatePoints(forValue: repetitions,
+                                    pointsMapping: self.legTuckRepetitions,
+                                    order: .descending)
         case .plank(let time):
-            return self.calculatePointsForPlank(time: time)
+            return self.calculatePoints(forValue: time,
+                                    pointsMapping: self.plankTimes,
+                                    order: .descending)
         case .twoMileRun(let time):
-            return self.calculatePointsForTwoMileRun(time: time)
+            return self.calculatePoints(forValue: time,
+                                    pointsMapping: self.twoMileRunTimes,
+                                    order: .ascending)
         }
     }
 
-    private func calculatePointsForDeadlift(pounds: Pounds) -> Int {
-        for (points, value) in self.deadliftPounds {
-            // Because not all possible pounds values are listed in the CSV, if the
-            // given input is greater than or equal to the current value, returrn that value's
-            // matching points.
-            guard pounds >= value else {
-                continue
+    /// Calculates the number of points earned in an individual ACFT event based on the input value and points mapping provided.
+    /// - Parameters:
+    ///   - inputValue: The user's input value for a given ACFT event (e.x. repetitions, recorded time).
+    ///   - pointsMapping: A mapping of input values to possible awarded points.
+    ///   - order: The order in which the CSV column values for the given points mapping are organized.
+    /// - Returns: The number of points (0-100) the given input correlates to.
+    private func calculatePoints<T: Comparable>(forValue inputValue: T,
+                                           pointsMapping: PointsMapping<T>,
+                                           order: ColumnValueOrder) -> Int {
+        for (points, csvValue) in pointsMapping {
+            switch order {
+            case .ascending:
+                if inputValue <= csvValue {
+                    return points
+                }
+            case .descending:
+                if inputValue >= csvValue {
+                    return points
+                }
             }
 
-            return points
+            continue
         }
-
-        // For any value less than lowest possible pounds value, return 0 points.
-        return 0
-    }
-
-    private func calculatePointsForHandReleasePushUp(repetitions: Repetitions) -> Int {
-        for (points, value) in self.handReleasePushUpRepetitions {
-            // Hand release push up values will be listed in decreasing order.
-            // If the input repetitions is greater than or equal to the current repetitions
-            // value, then bucket the input repetitions under the currrent points value.
-            if repetitions >= value {
-                return points
-            } else {
-                continue
-            }
-        }
-
-        return 0
-    }
-
-    private func calculatePointsForSprintDragCarry(time: RecordedTime) -> Int {
-        for (points, value) in self.sprintDragCarryTimes {
-            // Sprint-drag-carry values will be listed in increasing order.
-            // If the input time is less than or equal to the current time value,
-            // then bucket the input time under the current points value.
-            if time <= value {
-                return points
-            } else {
-                continue
-            }
-        }
-
-        // For any time slower than the slowest scoring time value, return 0 points.
-        return 0
-    }
-
-    private func calculatePointsForLegTuck(repetitions: Repetitions) -> Int {
-        for (points, value) in self.legTuckRepetitions {
-            // Leg tuck values will be listed in decreasing order.
-            // If the input repetitions is greater than or equal to the current repetitions
-            // value, then bucket the input repetitions under the currrent points value.
-            if repetitions >= value {
-                return points
-            } else {
-                continue
-            }
-        }
-
-        // For any number of repetitions lower than the lowest listed value, return 0 points.
-        return 0
-    }
-
-    private func calculatePointsForPlank(time: RecordedTime) -> Int {
-        for (points, value) in self.plankTimes {
-            // Plank values will be listed in decreasing order (such that the
-            // longer you hold a plank, the higher the points). If the input time
-            // is greater than or equal to the current time value, then
-            // bucket the input time under the current points value.
-            if time >= value {
-                return points
-            } else {
-                continue
-            }
-        }
-
-        // For any time less than the shortest listed time value, return 0 points.
-        return 0
-    }
-
-    private func calculatePointsForTwoMileRun(time: RecordedTime) -> Int {
-        for (points, value) in self.twoMileRunTimes {
-            // Two-mile run values will be listed in increasing order (such that the
-            // longer it takes to complete two miles, the lower the points). If the input time
-            // is less than or equal to the current time value, then bucket
-            // the input time under the current points value.
-            if time <= value {
-                return points
-            } else {
-                continue
-            }
-        }
-
-        // For any time longer than the longest listed time value, return 0 points.
         return 0
     }
 
