@@ -14,6 +14,9 @@
 # Don't add MARKs to type definitions.
 --marktypes "never"
 
+# Overrides the default MARK format for grouped extensions ("MARK: %c") to include a "-".
+--groupedextension "MARK: - %c"
+
 # Makes sure the self. prefix is added where appropriate.
 --self insert 
 
