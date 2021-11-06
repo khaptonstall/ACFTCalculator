@@ -14,10 +14,6 @@
 # Don't add MARKs to type definitions.
 --marktypes "never"
 
-# Formats MARKs for extensions grouped with the extended type as "MARK: - String + FooProtocol"
-# This matches the default MARK style for the "extensionmark" option.
---groupedextension "MARK: - %t + %c"
-
 # Makes sure the self. prefix is added where appropriate.
 --self insert 
 
