@@ -17,3 +17,14 @@ extension Int: StringInitializable {
         self = int
     }
 }
+
+// MARK: - Float + StringInitializable
+
+extension Float: StringInitializable {
+    init?(string: String) {
+        guard let float = Float(string) else {
+            return nil
+        }
+        self = float
+    }
+}
