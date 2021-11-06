@@ -1,9 +1,4 @@
-//
-//  ACFTCalculatorError.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/24/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 import Foundation
 
@@ -17,12 +12,10 @@ public enum ACFTCalculatorError: Error {
 // MARK: - CSVReadingFailureReason
 
 public extension ACFTCalculatorError {
-
     enum CSVReadingFailureReason {
         case fileNotFound(fileName: String)
         case columnOutOfBounds(index: Int)
         case invalidData
         case dataConversionFailed(type: Any.Type, value: Any)
     }
-
 }

@@ -1,9 +1,4 @@
-//
-//  RecordedTimeTests.swift
-//  
-//
-//  Created by Kyle Haptonstall on 10/26/21.
-//
+// Copyright © 2021 Kyle Haptonstall.
 
 @testable import ACFTCalculator
 import XCTest
@@ -24,5 +19,4 @@ final class RecordedTimeTests: XCTestCase {
         XCTAssertEqual(RecordedTime(minutes: 1, seconds: 30),
                        RecordedTime(minutes: 1, seconds: 30))
     }
-
 }
