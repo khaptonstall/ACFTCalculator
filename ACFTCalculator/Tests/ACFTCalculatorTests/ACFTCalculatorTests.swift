@@ -50,6 +50,46 @@ final class ACFTCalculatorTests: XCTestCase {
         XCTAssertEqual(calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: pounds)), 0)
     }
 
+    // MARK: Standing Power Throw Calculator Tests
+
+    func testCalculatingStandingPowerThrowPointsForListedMetersValueReturnsCorrectPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a repetitions value that is explicitly listed on the CSV.
+        // 4.5 meters should equate to 60 points.
+        let meters: Float = 4.5
+        XCTAssertTrue(calculator.standingPowerThrowMeters.map { $0.value }.contains(meters))
+
+        let points = calculator.calculatePoints(for: .standingPowerThrow(meters: meters))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingStandingPowerThrowPointsForMetersValueFartherThanFarthestListedMetersValueReturnsHighestPointsValue() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a meters value that is farther than the farthest listed value.
+        // 12.5 meters is the farthest distance, so use one that is farther than that.
+        let meters: Float = 12.6
+        let farthestMetersValue = try XCTUnwrap(calculator.standingPowerThrowMeters.first?.value)
+        XCTAssertGreaterThan(meters, farthestMetersValue)
+
+        let points = calculator.calculatePoints(for: .standingPowerThrow(meters: meters))
+        XCTAssertEqual(points, 100)
+    }
+
+    func testCalculatingStandingPowerThrowPointsForMetersValueShorterThanShortestListedMetersValueReturnsZeroPoints() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a meters value that is shorter than the shortest listed value.
+        // 3.3 meters is the shortest value, so we'll use one shorter than that.
+        let meters: Float = 3.0
+        let shortestMetersValue = try XCTUnwrap(calculator.standingPowerThrowMeters.last?.value)
+        XCTAssertLessThan(meters, shortestMetersValue)
+
+        let points = calculator.calculatePoints(for: .standingPowerThrow(meters: meters))
+        XCTAssertEqual(points, 0)
+    }
+
     // MARK: Hand Release Push Up Calculator Tests
 
     func testCalculatingHandReleasePushUpPointsForListedRepsValueReturnsCorrectPointsValue() throws {

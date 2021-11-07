@@ -5,6 +5,7 @@ import Foundation
 public final class ACFTCalculator {
     public enum ACFTEvent {
         case threeRepetitionMaximumDeadlift(pounds: Int)
+        case standingPowerThrow(meters: Float)
         case handReleasePushUp(repetitions: Int)
         case sprintDragCarry(time: RecordedTime)
         case legTuck(repetitions: Int)
@@ -17,13 +18,14 @@ public final class ACFTCalculator {
     typealias Points = Int
     typealias Pounds = Int
     typealias Repetitions = Int
+    typealias Meters = Float
     typealias PointsMapping<T: StringInitializable> = [(points: Points, value: T)]
 
     /// Represents the column of pounds used for the 3-repetition maximum deadlift event.
     let deadliftPounds: PointsMapping<Pounds>
 
     /// Represents the column of meters for the standing power throw event.
-    let standingPowerThrowMeters: [String]
+    let standingPowerThrowMeters: PointsMapping<Meters>
 
     /// Represents the column of repetitions for the hand release push up event.
     let handReleasePushUpRepetitions: PointsMapping<Repetitions>
@@ -51,6 +53,7 @@ public final class ACFTCalculator {
             .compactMapACFTColumnToPointsMapping()
 
         self.standingPowerThrowMeters = try csvReader.readColumn(.standingPowerThrow)
+            .compactMapACFTColumnToPointsMapping()
 
         self.handReleasePushUpRepetitions = try csvReader.readColumn(.handReleasePushUp)
             .compactMapACFTColumnToPointsMapping()
@@ -82,6 +85,10 @@ public final class ACFTCalculator {
         case let .threeRepetitionMaximumDeadlift(pounds):
             return self.calculatePoints(forValue: pounds,
                                         pointsMapping: self.deadliftPounds,
+                                        order: .descending)
+        case let .standingPowerThrow(meters):
+            return self.calculatePoints(forValue: meters,
+                                        pointsMapping: self.standingPowerThrowMeters,
                                         order: .descending)
         case let .handReleasePushUp(repetitions):
             return self.calculatePoints(forValue: repetitions,
