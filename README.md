@@ -53,7 +53,7 @@ do {
 }
 ```
 
-When working with events that use time (such as the Two-Mile Run), you'll have use the `RecordedTime` struct, which provides two options for initialization:
+When working with events that use time (such as the Two-Mile Run), you'll use the `RecordedTime` struct, which provides two options for initialization:
 ```swift
 // Using RecordedTime(seconds:) creates a non-optional instance:
 let recordedTime = RecordedTime(seconds: 60)
