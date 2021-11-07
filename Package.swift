@@ -9,13 +9,14 @@ let package = Package(
         .iOS(.v14),
         .tvOS(.v14),
         .macOS(.v11),
-        .watchOS(.v6)
+        .watchOS(.v6),
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "ACFTCalculator",
-            targets: ["ACFTCalculator"]),
+            targets: ["ACFTCalculator"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,9 +28,11 @@ let package = Package(
         .target(
             name: "ACFTCalculator",
             dependencies: [],
-            resources: [.process("Resources/ACFTScoringStandards.csv")]),
+            resources: [.process("Resources/ACFTScoringStandards.csv")]
+        ),
         .testTarget(
             name: "ACFTCalculatorTests",
-            dependencies: ["ACFTCalculator"]),
+            dependencies: ["ACFTCalculator"]
+        ),
     ]
 )
