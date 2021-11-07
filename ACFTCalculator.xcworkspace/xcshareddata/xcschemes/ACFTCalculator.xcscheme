@@ -14,37 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ACFTCalculator_ACFTCalculator"
-               BuildableName = "ACFTCalculator_ACFTCalculator"
-               BlueprintName = "ACFTCalculator_ACFTCalculator"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "ACFTCalculator"
                BuildableName = "ACFTCalculator"
                BlueprintName = "ACFTCalculator"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ACFTCalculatorTests"
-               BuildableName = "ACFTCalculatorTests"
-               BlueprintName = "ACFTCalculatorTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -54,18 +26,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "YES">
-      <CodeCoverageTargets>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ACFTCalculator"
-            BuildableName = "ACFTCalculator"
-            BlueprintName = "ACFTCalculator"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-      </CodeCoverageTargets>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -99,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ACFTCalculator_ACFTCalculator"
-            BuildableName = "ACFTCalculator_ACFTCalculator"
-            BlueprintName = "ACFTCalculator_ACFTCalculator"
+            BlueprintIdentifier = "ACFTCalculator"
+            BuildableName = "ACFTCalculator"
+            BlueprintName = "ACFTCalculator"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
