@@ -137,7 +137,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is explicitly listed on the CSV.
         // 3:00 minutes should equate to 60 points.
-        let time = RecordedTime(minutes: 3, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 3, seconds: 0))
         XCTAssertTrue(calculator.sprintDragCarryTimes.map { $0.value }.contains(time))
 
         let points = calculator.calculatePoints(for: .sprintDragCarry(time: time))
@@ -149,7 +149,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is faster than the fasted listed time.
         // 1:33 is the fastest value, so use one that is faster than that.
-        let time = RecordedTime(minutes: 0, seconds: 30)
+        let time = try XCTUnwrap(RecordedTime(minutes: 0, seconds: 30))
         let fastestTimeValue = try XCTUnwrap(calculator.sprintDragCarryTimes.last?.value)
         XCTAssertLessThan(time, fastestTimeValue)
 
@@ -162,7 +162,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is slower than the slowest listed time.
         // 3:35 is the slowest value, so use one that is slower than that.
-        let time = RecordedTime(minutes: 10, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 10, seconds: 0))
         let slowestTimeValue = try XCTUnwrap(calculator.sprintDragCarryTimes.last?.value)
         XCTAssertGreaterThan(time, slowestTimeValue)
 
@@ -217,7 +217,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is explicitly listed on the CSV.
         // 2:09 minutes should equate to 60 points.
-        let time = RecordedTime(minutes: 2, seconds: 9)
+        let time = try XCTUnwrap(RecordedTime(minutes: 2, seconds: 9))
         XCTAssertTrue(calculator.plankTimes.map { $0.value }.contains(time))
 
         let points = calculator.calculatePoints(for: .plank(time: time))
@@ -229,7 +229,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is longer than the longest listed time.
         // 4:20 is the longest listed value, so use one that is longer than that.
-        let time = RecordedTime(minutes: 5, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 5, seconds: 0))
         let longestTimeValue = try XCTUnwrap(calculator.plankTimes.first?.value)
         XCTAssertGreaterThan(time, longestTimeValue)
 
@@ -242,7 +242,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is shorte than the shortest listed time.
         // 2:03 is the shortest listed value, so use one that is shorter than that.
-        let time = RecordedTime(minutes: 1, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 1, seconds: 0))
         let shortestTimeValue = try XCTUnwrap(calculator.plankTimes.last?.value)
         XCTAssertLessThan(time, shortestTimeValue)
 
@@ -257,7 +257,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is explicitly listed on the CSV.
         // 21:00 minutes should equate to 60 points.
-        let time = RecordedTime(minutes: 21, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 21, seconds: 0))
         XCTAssertTrue(calculator.twoMileRunTimes.map { $0.value }.contains(time))
 
         let points = calculator.calculatePoints(for: .twoMileRun(time: time))
@@ -269,7 +269,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is faster than the fasted listed time.
         // 13:30 is the fastest value, so use one that is faster than that.
-        let time = RecordedTime(minutes: 12, seconds: 30)
+        let time = try XCTUnwrap(RecordedTime(minutes: 12, seconds: 30))
         let fastestTimeValue = try XCTUnwrap(calculator.twoMileRunTimes.first?.value)
         XCTAssertLessThan(time, fastestTimeValue)
 
@@ -282,7 +282,7 @@ final class ACFTCalculatorTests: XCTestCase {
 
         // Use a time value that is slower than the slowest listed time.
         // 22:48 is the slowest value, so use one that is slower than that.
-        let time = RecordedTime(minutes: 23, seconds: 0)
+        let time = try XCTUnwrap(RecordedTime(minutes: 23, seconds: 0))
         let slowestTimeValue = try XCTUnwrap(calculator.twoMileRunTimes.last?.value)
         XCTAssertGreaterThan(time, slowestTimeValue)
 
