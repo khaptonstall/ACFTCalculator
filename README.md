@@ -5,8 +5,6 @@
 
 ACFTCalculator is a tool, written in Swift, for calculating Army Combat Fitness Test scores.
 
-🚧 ⚠️ This project is an active work-in-progress and is not yet considered "feature complete" to enable calculating points for every ACFT event. ⚠️ 🚧
-
 ## Installation
 ### Swift Package Manager
 
@@ -22,8 +20,48 @@ dependencies: [
 
 For app projects, simply follow the [Apple documentation](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) on adding package dependencies to your app.
 
-## Usage 
-TODO
+## Usage
+Each ACFT event is represented by the `ACFTEvent` enum, where each case has a single associated value representing the value (meters, pounds, repetitions, etc.) recorded for that individual event.
+
+After capturing a value for an individual event, you just need to create an instance of `ACFTCalculator` and use the `calculatePoints(event:)` method to obtain the number of points earned.
+```swift
+do {
+    let calculator = try ACFTCalculator()
+    
+    // 3 Repetition Maxium Deadlift (MDL)
+    _ = calculator.calculatePoints(for: .threeRepetitionMaximumDeadlift(pounds: 340))
+    
+    // Standing Power Throw (SPT)
+    _ = calculator.calculatePoints(for: .standingPowerThrow(meters: 12.5))
+    
+    // Hand Release Push-Up - Arm Extension (HRP)
+    _ = calculator.calculatePoints(for: .handReleasePushUp(repetitions: 60))
+    
+    // Sprint-Drag-Carry (SDC)
+    _ = calculator.calculatePoints(for: .sprintDragCarry(time: RecordedTime(seconds: 93)))
+    
+    // Leg Tuck (LTK)
+    _ = calculator.calculatePoints(for: .legTuck(repetitions: 20))
+    
+    // Plank (PLK)
+    _ = calculator.calculatePoints(for: .plank(time: RecordedTime(seconds: 260)))
+    
+    // Two-Mile Run (2MR)
+    _ = calculator.calculatePoints(for: .twoMileRun(time: RecordedTime(seconds: 810)))
+} catch {
+    print(error)
+}
+```
+
+When working with events that use time (such as the Two-Mile Run), you'll have use the `RecordedTime` struct, which provides two options for initialization:
+```swift
+// Using RecordedTime(seconds:) creates a non-optional instance:
+let recordedTime = RecordedTime(seconds: 60)
+
+// Using RecordedTime(minutes:seconds:) creates an optional instance which returns nil when an invalid seconds value is provide (e.x. seconds > 59):
+let nilRecordedTime = RecordedTime(minutes: 1, seconds: 100)
+let validOptionalRecordedTime = RecordedTime(minutes: 1, seconds: 59)
+```
 
 ## Resources
 For more information on the Army Combat Fitness Test and individual events, see https://www.army.mil/acft/
