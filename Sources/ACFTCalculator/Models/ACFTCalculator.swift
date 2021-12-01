@@ -11,6 +11,11 @@ public final class ACFTCalculator {
         case legTuck(repetitions: Int)
         case plank(time: RecordedTime)
         case twoMileRun(time: RecordedTime)
+
+        // Alternate Events
+        case oneThousandMeterSwim(time: RecordedTime)
+        case twelveThousandMeterBike(time: RecordedTime)
+        case fiveThousandMeterRow(time: RecordedTime)
     }
 
     // MARK: Properties
@@ -110,6 +115,10 @@ public final class ACFTCalculator {
             return self.calculatePoints(forValue: time,
                                         pointsMapping: self.twoMileRunTimes,
                                         order: .ascending)
+        case .oneThousandMeterSwim(let time),
+                .twelveThousandMeterBike(let time),
+                .fiveThousandMeterRow(let time):
+            return self.calculatePointsForAlternateEvent(time: time)
         }
     }
 
@@ -137,6 +146,18 @@ public final class ACFTCalculator {
             continue
         }
         return 0
+    }
+
+    /// Calculates the number of points earned in an alternate ACFT event (i.e. swim, bike, or row) based on the input value.
+    /// - Parameter time: The time recorded by the user for a given alternate event.
+    /// - Returns: The number of points (0-100) the given input correlates to.
+    private func calculatePointsForAlternateEvent(time: RecordedTime) -> Int {
+        // At time of writing, the alternate events (see https://www.army.mil/acft/#faq-section-4)
+        // do not have a published scoring chart but one is said to be in the works.
+        // The allotted time is 25 minutes for each alternate event and a passing score of 60 points
+        // is awarded so long as the soldier completes the event in those 25 minutes.
+        let allowedTime = RecordedTime(seconds: 1500) // 25 minutes
+        return time <= allowedTime ? 60 : 0
     }
 }
 

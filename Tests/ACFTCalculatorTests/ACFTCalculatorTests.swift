@@ -289,4 +289,109 @@ final class ACFTCalculatorTests: XCTestCase {
         let points = calculator.calculatePoints(for: .twoMileRun(time: time))
         XCTAssertEqual(points, 0)
     }
+
+    // MARK: 1K Meter Swim Calculator Tests
+
+    func testCalculatingOneThousandMeterSwimPointsForTimeLessThanAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is less than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 15, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .oneThousandMeterSwim(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingOneThousandMeterSwimPointsForTimeEqualToAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is equal to the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .oneThousandMeterSwim(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingOneThousandMeterSwimPointsForTimeGreaterThanAllottedTimeReturnsFailingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is greater than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 1))
+
+        // Verify a failing score of 0 is returned.
+        let points = calculator.calculatePoints(for: .oneThousandMeterSwim(time: time))
+        XCTAssertEqual(points, 0)
+    }
+
+    // MARK: 12K Meter Bike Calculator Tests
+
+    func testCalculatingTwelveThousandMeterBikePointsForTimeLessThanAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is less than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 15, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .twelveThousandMeterBike(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingTwelveThousandMeterBikePointsForTimeEqualToAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is equal to the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .twelveThousandMeterBike(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingTwelveThousandMeterBikePointsForTimeGreaterThanAllottedTimeReturnsFailingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is greater than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 1))
+
+        // Verify a failing score of 0 is returned.
+        let points = calculator.calculatePoints(for: .twelveThousandMeterBike(time: time))
+        XCTAssertEqual(points, 0)
+    }
+
+    // MARK: 5K Meter Row Calculator Tests
+
+    func testCalculatingFiveThousandMeterRowPointsForTimeLessThanAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is less than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 15, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .fiveThousandMeterRow(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingFiveThousandMeterRowPointsForTimeEqualToAllottedTimeReturnsPassingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is equal to the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 00))
+
+        // Verify a pass score of 60 is returned.
+        let points = calculator.calculatePoints(for: .fiveThousandMeterRow(time: time))
+        XCTAssertEqual(points, 60)
+    }
+
+    func testCalculatingFiveThousandMeterRowPointsForTimeGreaterThanAllottedTimeReturnsFailingScore() throws {
+        let calculator = try ACFTCalculator()
+
+        // Use a time that is greater than the allotted time (25 minutes).
+        let time = try XCTUnwrap(RecordedTime(minutes: 25, seconds: 1))
+
+        // Verify a failing score of 0 is returned.
+        let points = calculator.calculatePoints(for: .fiveThousandMeterRow(time: time))
+        XCTAssertEqual(points, 0)
+    }
 }
