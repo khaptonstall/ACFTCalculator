@@ -115,9 +115,9 @@ public final class ACFTCalculator {
             return self.calculatePoints(forValue: time,
                                         pointsMapping: self.twoMileRunTimes,
                                         order: .ascending)
-        case .oneThousandMeterSwim(let time),
-                .twelveThousandMeterBike(let time),
-                .fiveThousandMeterRow(let time):
+        case let .oneThousandMeterSwim(time),
+             let .twelveThousandMeterBike(time),
+             let .fiveThousandMeterRow(time):
             return self.calculatePointsForAlternateEvent(time: time)
         }
     }
