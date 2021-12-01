@@ -48,6 +48,16 @@ do {
     
     // Two-Mile Run (2MR)
     _ = calculator.calculatePoints(for: .twoMileRun(time: RecordedTime(seconds: 810)))
+    
+    // Alternate Events
+    // 1K Meter Swim
+    _ = calculator.calculatePoints(for: .oneThousandMeterSwim(time: RecordedTime(seconds: 1500)))
+    
+    // 12K Meter Stationary Bike
+    _ = calculator.calculatePoints(for: .twelveThousandMeterBike(time: RecordedTime(seconds: 1500)))
+        
+    // 5K Meter Row
+    _ = calculator.calculatePoints(for: .fiveThousandMeterRow(time: RecordedTime(seconds: 1500)))
 } catch {
     print(error)
 }
