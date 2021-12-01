@@ -68,7 +68,7 @@ When working with events that use time (such as the Two-Mile Run), you'll use th
 // Using RecordedTime(seconds:) creates a non-optional instance:
 let recordedTime = RecordedTime(seconds: 60)
 
-// Using RecordedTime(minutes:seconds:) creates an optional instance which returns nil when an invalid seconds value is provide (e.x. seconds > 59):
+// Using RecordedTime(minutes:seconds:) creates an optional instance which returns nil when an invalid seconds value is provided (e.x. seconds > 59):
 let nilRecordedTime = RecordedTime(minutes: 1, seconds: 100)
 let validOptionalRecordedTime = RecordedTime(minutes: 1, seconds: 59)
 ```
